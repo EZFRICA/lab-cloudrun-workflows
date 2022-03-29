@@ -27,7 +27,7 @@ app = FastAPI()
 async def execute_workflow():
     
     project = os.environ.get('GOOGLE_CLOUD_PROJECT')
-    location = os.environ.get('GOOGLE_CLOUD_LOCATION')
+    location = os.environ.get('WORKFLOW_LOCATION')
     workflow = os.environ.get('WORKFLOW_NAME')
     
     """Execute a workflow and print the execution results."""
