@@ -13,12 +13,12 @@
 # limitations under the License.
 
 from fastapi import FastAPI
-import os
+import os, json
 import time
 
 from google.cloud import workflows_v1beta
 from google.cloud.workflows import executions_v1beta
-from google.cloud.workflows.executions_v1beta.types import executions
+from google.cloud.workflows.executions_v1beta.types import executions, Execution
 
 app = FastAPI()
 
@@ -32,7 +32,7 @@ async def execute_workflow():
     
     """Execute a workflow and print the execution results."""
     # [START workflows_api_quickstart]
-
+    workflows_argument = {}
 
     # TODO(developer): Uncomment these lines and replace with your values.
     # project = 'my-project-id'
@@ -50,7 +50,8 @@ async def execute_workflow():
     parent = workflows_client.workflow_path(project, location, workflow)
 
     # Execute the workflow.
-    response = execution_client.create_execution(request={"parent": parent})
+    execution = Execution(argument = json.dumps(workflows_argument))
+    response = execution_client.create_execution(parent=parent, execution=execution)
     print(f"Created execution: {response.name}")
 
     # Wait for execution to finish, then print results.
